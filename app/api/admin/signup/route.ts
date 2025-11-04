@@ -73,7 +73,7 @@ export async function POST(request: Request) {
 
     // Compose email (HTML and text)
     const mailSubject = 'BMS Security - Account informatie';
-    const baseUrl = "bms-security-form.vercel.app";
+    const baseUrl = "https://bms-security-form.vercel.app";
     const cleanedBase = baseUrl ? baseUrl.replace(/\/$/, '') : '';
     const loginUrl = cleanedBase ? `${cleanedBase}/login` : '#';
     const logoUrl = cleanedBase ? `${cleanedBase}/logo.jpg` : '';
@@ -103,7 +103,7 @@ export async function POST(request: Request) {
     .box { border:2px solid ${brandColor}; border-radius:12px; padding:16px; background:#f5f5f0; }
     .label { font-size:12px; color:#4b5563; margin:0; }
     .value { font-size:16px; font-weight:700; color:#111827; margin:4px 0 12px 0; }
-    .button { display:inline-block; background:${brandColor}; color:#ffffff !important; text-decoration:none; padding:12px 20px; border-radius:10px; font-weight:700; letter-spacing:0.3px; }
+    .button { display:inline-block; background:${brandColor}; color:#ffffff !important; text-decoration:none; padding:12px 20px; border-radius:10px; font-weight:700; letter-spacing:0.3px; cursorL: pointer; }
     .button:hover { background:${accentColor}; }
     .footer { padding:16px 24px 24px 24px; color:#6b7280; font-size:12px; }
   </style>
