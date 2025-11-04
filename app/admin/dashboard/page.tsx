@@ -441,7 +441,7 @@ export default function AdminDashboard() {
                                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#6a6840'}
                                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#555425'}
                               >
-                                {signingUpId === form.id ? 'Aanmelden…' : 'Sign up'}
+                                {signingUpId === form.id ? 'Aanmelden…' : 'Aanmelden'}
                               </button>
                             </>
                           )}
@@ -769,17 +769,24 @@ export default function AdminDashboard() {
                 >
                   📄 Generate Complete PDF
                 </button>
-                {selectedForm.pdf_path && (
-                  <button
-                    onClick={() => handleDownloadPDF(selectedForm.pdf_path!)}
-                    className="px-8 py-3 rounded-lg font-bold text-white transition-all transform hover:scale-105 shadow-lg"
-                    style={{ backgroundColor: '#555425' }}
-                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#6a6840'}
-                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#555425'}
-                  >
-                    📥 Download Original PDF
-                  </button>
-                )}
+                <button
+                  onClick={() => selectedForm.pdf_path && handleDownloadPDF(selectedForm.pdf_path)}
+                  disabled={!selectedForm.pdf_path}
+                  className="px-8 py-3 rounded-lg font-bold text-white transition-all transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                  style={{ backgroundColor: selectedForm.pdf_path ? '#555425' : '#999999' }}
+                  onMouseEnter={(e) => {
+                    if (selectedForm.pdf_path) {
+                      e.currentTarget.style.backgroundColor = '#6a6840';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (selectedForm.pdf_path) {
+                      e.currentTarget.style.backgroundColor = '#555425';
+                    }
+                  }}
+                >
+                  📥 Download Original PDF
+                </button>
               </div>
             </div>
           </div>
