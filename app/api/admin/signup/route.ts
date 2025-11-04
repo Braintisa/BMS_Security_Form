@@ -73,7 +73,7 @@ export async function POST(request: Request) {
 
     // Compose email (HTML and text)
     const mailSubject = 'BMS Security - Account informatie';
-    const baseUrl = process.env.APP_BASE_URL || '';
+    const baseUrl = "bms-security-form.vercel.app";
     const cleanedBase = baseUrl ? baseUrl.replace(/\/$/, '') : '';
     const loginUrl = cleanedBase ? `${cleanedBase}/login` : '#';
     const logoUrl = cleanedBase ? `${cleanedBase}/logo.jpg` : '';
