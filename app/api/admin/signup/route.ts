@@ -8,16 +8,16 @@ async function sendEmail(to: string, subject: string, text: string, html?: strin
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const nodemailer: any = require('nodemailer');
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT || 587),
+      host: "smtp.gmail.com",
+      port: 465,
       secure: false,
       auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+        user: "graslydias@gmail.com",
+        pass: "jemsjoaeipuikldb",
       },
     });
     await transporter.sendMail({
-      from: process.env.SMTP_FROM || 'no-reply@example.com',
+      from: "graslydias@gmail.com",
       to,
       subject,
       text,
