@@ -8,9 +8,7 @@ async function sendEmail(to: string, subject: string, text: string, html?: strin
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const nodemailer: any = require('nodemailer');
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: false,
+      service: "gmail",
       auth: {
         user: "graslydias@gmail.com",
         pass: "jemsjoaeipuikldb",
