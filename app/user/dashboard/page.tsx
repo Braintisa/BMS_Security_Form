@@ -75,9 +75,9 @@ export default function UserDashboard() {
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200">
       {/* Navbar */}
       <div className="w-full" style={{ backgroundColor: "#555425" }}>
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between flex-wrap gap-2 sm:gap-3">
           <div className="flex items-center gap-3">
-            <div className="relative w-16 h-10 rounded overflow-hidden bg-white">
+            <div className="relative w-12 h-8 sm:w-16 sm:h-10 rounded overflow-hidden bg-white">
               <Image
                 src="/logo.jpg"
                 alt="Site logo"
@@ -87,13 +87,13 @@ export default function UserDashboard() {
             </div>
             <span className="text-white font-semibold">BMS Security</span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={() => {
                 setMessage({ type: "", text: "" });
                 setShowProfile(true);
               }}
-              className="px-4 py-2 rounded-lg font-semibold text-white transition-all shadow-md"
+              className="px-3 sm:px-4 py-2 rounded-lg font-semibold text-white text-sm sm:text-base transition-all shadow-md"
               style={{ backgroundColor: "#6a6840" }}
               onMouseEnter={(e) =>
                 ((e.currentTarget as HTMLElement).style.backgroundColor =
@@ -108,7 +108,7 @@ export default function UserDashboard() {
             </button>
             <button
               onClick={handleLogout}
-              className="px-4 py-2 rounded-lg font-semibold text-white transition-all shadow-md"
+              className="px-3 sm:px-4 py-2 rounded-lg font-semibold text-white text-sm sm:text-base transition-all shadow-md"
               style={{ backgroundColor: "#6a6840" }}
               onMouseEnter={(e) =>
                 ((e.currentTarget as HTMLElement).style.backgroundColor =
@@ -126,10 +126,10 @@ export default function UserDashboard() {
       </div>
 
       {/* Empty dashboard content area */}
-      <div className="max-w-7xl mx-auto px-4 py-10">
-        <div className="flex gap-6">
+      <div className="max-w-7xl mx-auto px-4 py-8 sm:py-10">
+        <div className="flex flex-col lg:flex-row gap-6">
           {/* Sidebar */}
-          <aside className="w-64 shrink-0">
+          <aside className="w-full lg:w-64 shrink-0">
             <div className="bg-white rounded-2xl shadow-xl p-4">
               <h2
                 className="text-lg font-semibold mb-4"
@@ -165,7 +165,7 @@ export default function UserDashboard() {
 
           {/* Main content */}
           <main className="flex-1">
-            <div className="bg-white rounded-2xl shadow-xl p-10 text-center text-gray-600">
+            <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 lg:p-10 text-center text-gray-600">
               Welkom{userName ? `, ${userName}` : ""}. Dit is uw dashboard.
             </div>
           </main>
