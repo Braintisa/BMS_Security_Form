@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 export default function UserDashboard() {
   const router = useRouter();
@@ -13,6 +14,7 @@ export default function UserDashboard() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error' | '' ; text: string }>({ type: '', text: '' });
+  const [showProfile, setShowProfile] = useState(false);
 
   useEffect(() => {
     const t = localStorage.getItem('userToken') || '';
@@ -60,6 +62,8 @@ export default function UserDashboard() {
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
+      // Keep modal open but show success; alternatively, close after success:
+      // setShowProfile(false);
     } catch (err: any) {
       setMessage({ type: 'error', text: err?.message || 'Wachtwoord wijzigen mislukt' });
     } finally {
@@ -69,13 +73,25 @@ export default function UserDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200">
-      <div className="max-w-3xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-6">
-          <div className="p-6 flex items-center justify-between" style={{ backgroundColor: '#555425' }}>
-            <div>
-              <h1 className="text-2xl font-bold text-white">BMS Security</h1>
-              <p className="text-white/90 text-sm">Gebruikersdashboard</p>
+      {/* Navbar */}
+      <div className="w-full" style={{ backgroundColor: '#555425' }}>
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="relative w-16 h-10 rounded overflow-hidden bg-white">
+              <Image src="/logo.jpg" alt="Site logo" fill style={{ objectFit: 'cover' }} />
             </div>
+            <span className="text-white font-semibold">BMS Security</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => { setMessage({ type: '', text: '' }); setShowProfile(true); }}
+              className="px-4 py-2 rounded-lg font-semibold text-white transition-all shadow-md"
+              style={{ backgroundColor: '#6a6840' }}
+              onMouseEnter={(e) => (e.currentTarget as HTMLElement).style.backgroundColor = '#4f4d2f'}
+              onMouseLeave={(e) => (e.currentTarget as HTMLElement).style.backgroundColor = '#6a6840'}
+            >
+              Profiel
+            </button>
             <button
               onClick={handleLogout}
               className="px-4 py-2 rounded-lg font-semibold text-white transition-all shadow-md"
@@ -86,24 +102,66 @@ export default function UserDashboard() {
               Uitloggen
             </button>
           </div>
-          <div className="p-6">
-            <div className="mb-4">
-              <p className="text-sm text-gray-600">Ingelogd als</p>
-              <p className="text-lg font-semibold text-gray-900">{userName || 'Gebruiker'} ({userEmail})</p>
-            </div>
+        </div>
+      </div>
 
-            {message.text && (
-              <div 
-                className={`mb-6 p-4 rounded-lg border-2 ${message.type === 'success' ? 'text-[#555425]' : 'text-red-800'}`}
-                style={message.type === 'success' ? { backgroundColor: '#f5f5f0', borderColor: '#555425' } : { backgroundColor: '#fef2f2', borderColor: '#fecaca' }}
-              >
-                <p className="font-semibold">{message.text}</p>
+      {/* Empty dashboard content area */}
+      <div className="max-w-7xl mx-auto px-4 py-10">
+        <div className="flex gap-6">
+          {/* Sidebar */}
+          <aside className="w-64 shrink-0">
+            <div className="bg-white rounded-2xl shadow-xl p-4">
+              <h2 className="text-lg font-semibold mb-4" style={{ color: '#555425' }}>Menu</h2>
+              <div className="flex flex-col gap-2 text-gray-500">
+                <button className="w-full text-left px-4 py-2 rounded-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50">Dashboard</button>
+                <button className="w-full text-left px-4 py-2 rounded-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50">Reports</button>
+                <button className="w-full text-left px-4 py-2 rounded-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50">Tasks</button>
+                <button className="w-full text-left px-4 py-2 rounded-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50">Employees</button>
+                <button className="w-full text-left px-4 py-2 rounded-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50">Schedules</button>
+                <button className="w-full text-left px-4 py-2 rounded-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50">Settings</button>
+                <button className="w-full text-left px-4 py-2 rounded-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50">Help</button>
               </div>
-            )}
+            </div>
+          </aside>
 
-            <div className="border-2 rounded-xl p-6" style={{ borderColor: '#555425' }}>
-              <h2 className="text-xl font-bold mb-4" style={{ color: '#555425' }}>Profiel</h2>
-              <p className="text-sm text-gray-600 mb-6">Wijzig hier uw wachtwoord.</p>
+          {/* Main content */}
+          <main className="flex-1">
+            <div className="bg-white rounded-2xl shadow-xl p-10 text-center text-gray-600">
+              Welkom{userName ? `, ${userName}` : ''}. Dit is uw dashboard.
+            </div>
+          </main>
+        </div>
+      </div>
+
+      {/* Profile Modal */}
+      {showProfile && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setShowProfile(false)}></div>
+          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4">
+            <div className="px-6 py-4 flex items-center justify-between" style={{ backgroundColor: '#555425' }}>
+              <h3 className="text-white font-semibold">Profiel</h3>
+              <button
+                onClick={() => setShowProfile(false)}
+                className="text-white/90 hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="p-6">
+              <div className="mb-6">
+                <p className="text-sm text-gray-600">Geregistreerd e-mail</p>
+                <p className="text-lg font-semibold text-gray-900 break-all">{userEmail}</p>
+              </div>
+
+              {message.text && (
+                <div
+                  className={`mb-6 p-4 rounded-lg border-2 ${message.type === 'success' ? 'text-[#555425]' : 'text-red-800'}`}
+                  style={message.type === 'success' ? { backgroundColor: '#f5f5f0', borderColor: '#555425' } : { backgroundColor: '#fef2f2', borderColor: '#fecaca' }}
+                >
+                  <p className="font-semibold">{message.text}</p>
+                </div>
+              )}
+
               <form onSubmit={changePassword} className="space-y-4">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Huidig wachtwoord</label>
@@ -117,22 +175,26 @@ export default function UserDashboard() {
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Bevestig nieuw wachtwoord</label>
                   <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg" required />
                 </div>
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="text-white px-6 py-3 rounded-lg transition-all font-semibold shadow-md hover:shadow-lg disabled:opacity-50"
-                  style={{ backgroundColor: loading ? '#9ca38f' : '#555425' }}
-                  onMouseEnter={(e) => { if (!loading) (e.currentTarget as HTMLElement).style.backgroundColor = '#6a6840'; }}
-                  onMouseLeave={(e) => { if (!loading) (e.currentTarget as HTMLElement).style.backgroundColor = '#555425'; }}
-                >
-                  {loading ? 'Opslaan...' : 'Wachtwoord wijzigen'}
-                </button>
+                <div className="flex items-center justify-end gap-3 pt-2">
+                  <button type="button" onClick={() => setShowProfile(false)} className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700">
+                    Sluiten
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="text-white px-6 py-2 rounded-lg transition-all font-semibold shadow-md hover:shadow-lg disabled:opacity-50"
+                    style={{ backgroundColor: loading ? '#9ca38f' : '#555425' }}
+                    onMouseEnter={(e) => { if (!loading) (e.currentTarget as HTMLElement).style.backgroundColor = '#6a6840'; }}
+                    onMouseLeave={(e) => { if (!loading) (e.currentTarget as HTMLElement).style.backgroundColor = '#555425'; }}
+                  >
+                    {loading ? 'Opslaan...' : 'Wachtwoord wijzigen'}
+                  </button>
+                </div>
               </form>
             </div>
-
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
